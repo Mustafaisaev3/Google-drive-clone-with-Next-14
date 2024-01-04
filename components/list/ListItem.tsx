@@ -42,7 +42,7 @@ const ListItem = ({ item }: ListItemProps) => {
       </TableCell>
       <TableCell>{item.size ? byteConverter(item.size) : <Minus />}</TableCell>
       <TableCell className="flex justify-end group items-center space-x-2">
-        <ListAction />
+        <ListAction item={item} />
       </TableCell>
     </TableRow>
   )

@@ -2,8 +2,13 @@ import React from 'react'
 import { Download, MoreVertical, Pencil, Star, Trash, UserPlus } from 'lucide-react'
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Separator } from '../ui/separator';
+import { IFolderAndFile } from '@/types';
 
-const ListAction = () => {
+interface ListActionProps {
+    item: IFolderAndFile;
+}
+
+const ListAction = ({ item }: ListActionProps) => {
   return (
     <div className="flex items-center space-x-1">
       <div
