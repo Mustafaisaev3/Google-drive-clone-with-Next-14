@@ -8,6 +8,7 @@ import { Button } from '../ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Progress } from '../ui/progress';
 import PopoverActions from './PopoverActions';
+import { usePlan } from '@/hooks/use-plan';
 
 const sidebarLinks = [
     {
@@ -38,6 +39,8 @@ const sidebarLinks = [
 ];
 
 const Sidebar = () => {
+  const { onOpen } = usePlan();
+
   return (
     <div className="h-[90vh] w-72 fixed top-[10vh] left-0 z-30 bg-[#F6F9FC] dark:bg-[#1f1f1f] border-r">
       <div className='flex flex-col p-3'>
@@ -62,8 +65,8 @@ const Sidebar = () => {
           <div className="flex flex-col space-y-2 mx-4">
             <Progress className='h-2' value={30} />
             <span>150 MB of 1.5 GB used</span>
-            <Button className="rounded-full" variant={"outline"}>
-            Get more storage
+            <Button className="rounded-full" variant={"outline"} onClick={onOpen}>
+              Get more storage
             </Button>
           </div>
         </div>
