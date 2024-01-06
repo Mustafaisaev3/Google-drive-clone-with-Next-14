@@ -10,31 +10,46 @@ import { useLayout } from '@/hooks/use-layout';
 interface HeaderProps {
     label: string;
     isHome?: boolean;
+    isDocument?: boolean;
+    isDocumentPage?: boolean;
   }
 
-const Header = ({ label, isHome  }: HeaderProps) => {
+const Header = ({ label, isHome, isDocument, isDocumentPage }: HeaderProps) => {
   const router = useRouter()
   const { layout, setLayout } = useLayout()
 
   return (
     <div className="w-full flex items-center justify-between">
-        {isHome ? (
-        <Popover>
+      {isHome ? (
+          <Popover>
           <PopoverTrigger className="flex justify-start">
-            <div className="px-4 py-2 hover:bg-secondary transition rounded-full flex items-center space-x-2">
+              <div className="px-4 py-2 hover:bg-secondary transition rounded-full flex items-center space-x-2">
               <h2 className="text-xl capitalize">{label}</h2>
               <ChevronDown />
-            </div>
+              </div>
           </PopoverTrigger>
           <PopoverContent className="px-0 py-2">
-            <PopoverActions />
+              <PopoverActions />
           </PopoverContent>
-        </Popover>
+          </Popover>
       ) : (
-        <div className='text-xl'>{label}</div>
+          <>
+          {isDocumentPage ? (
+              <div
+              className="flex items-center space-x-2 hover:bg-secondary transition px-4 py-2 rounded-full"
+              role="button"
+              onClick={() => router.back()}
+              >
+              <ArrowBigLeftDash className="w-6 h-6" />
+              <div className="text-xl">{label}</div>
+              </div>
+          ) : (
+              <div className="text-xl">{label}</div>
+          )}
+          </>
       )}
 
-      {isHome && (
+      {isHome && !isDocument && (
         <div className="flex items-center space-x-2">
           {layout === "list" ? (
             <div
