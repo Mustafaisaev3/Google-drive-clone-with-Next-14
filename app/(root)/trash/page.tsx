@@ -1,10 +1,10 @@
 import React from "react";
 import { db } from "@/lib/firebase";
 import { auth } from "@clerk/nextjs";
-import { collection, getDocs, limit, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import Empty from "@/components/shared/Empty";
 import Header from "@/components/shared/Header";
-import ListItem from "@/components/list/ListItem";
+import TrashItem from "@/components/shared/TrashItem";
 import {
   Table,
   TableBody,
@@ -19,8 +19,7 @@ const getData = async (uid: string, type: "files" | "folders") => {
   const q = query(
     collection(db, type),
     where("uid", "==", uid),
-    where("isArchive", "==", false),
-    limit(4)
+    where("isArchive", "==", true)
   );
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
@@ -37,7 +36,7 @@ const page = async () => {
 
   return (
     <>
-      <Header label="Recent" />
+      <Header label="Trash" />
       {[...files, ...folders].length === 0 ? (
         <Empty />
       ) : (
@@ -45,15 +44,13 @@ const page = async () => {
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Owner</TableHead>
-              <TableHead>Created at</TableHead>
+              <TableHead>Archived time</TableHead>
               <TableHead>File size</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {[...folders, ...files].map((folder) => (
-              <ListItem key={folder.id} item={folder} />
+              <TrashItem key={folder.id} item={folder} />
             ))}
           </TableBody>
         </Table>
