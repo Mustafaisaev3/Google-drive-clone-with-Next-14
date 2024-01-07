@@ -10,7 +10,7 @@ interface StorageProps {
 }
 
 const Storage = ({ totalSize }: StorageProps) => {
-  const { subscription, totalStorage, setTotalStorage } = useSubscription();
+  const { subscription, totalStorage } = useSubscription();
 
   const totalValue = subscription === "Basic" ? 15_000_000 : 15_000_000_0;
 
