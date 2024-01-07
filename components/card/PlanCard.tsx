@@ -6,6 +6,8 @@ import { Separator } from "../ui/separator";
 import { Check } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { useSubscription } from "@/hooks/use-subscription";
+import axios from 'axios'
+import { toast } from "sonner";
 
 interface PlanCardProps {
   name: string;
@@ -25,6 +27,23 @@ const PlanCard = ({
   const { user } = useUser();
   const { subscription } = useSubscription();
 
+  const onSubmit = () => {
+    const promise = axios
+      .post("/api/subscription", {
+        email: user?.emailAddresses[0].emailAddress,
+        name: user?.fullName,
+        userId: user?.id,
+        priceId,
+      })
+      .then((res) => window.open(res.data, "_blank"));
+
+    toast.promise(promise, {
+      loading: "Loading...",
+      success: "Subscribed!",
+      error: "Error subscribing",
+    });
+  };
+
   return (
     <div className="border rounded-md p-4">
       <h1 className="text-center text-xl">{name}</h1>
@@ -38,7 +57,7 @@ const PlanCard = ({
       </div>
       {priceId ? (
         <div className="w-full flex justify-center">
-          <Button>
+          <Button onClick={onSubmit}>
             {subscription === "Basic" ? "Get offer" : "Manage subscription"}
           </Button>
         </div>
@@ -47,6 +66,7 @@ const PlanCard = ({
           <Button
             disabled={subscription != "Pro"}
             variant={subscription === "Basic" ? "destructive" : "default"}
+            onClick={onSubmit}
           >
             {subscription === "Basic" ? "Current plan" : "Manage subscription"}
           </Button>
